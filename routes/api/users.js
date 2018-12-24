@@ -1,9 +1,15 @@
 const express=require('express')
 const gravatar=require('gravatar')
 const bcrypt=require('bcryptjs')
+const jwt=require('jsonwebtoken')
+const passport=require('passport')
+
+const keys=require('../../config/keys')
 
 const router=express.Router();
 
+const validateRegisterInput=require('../../validation/register')
+const validateLoginInput=require('../../validation/login')
 
 const User=require('../../models/User')
 
@@ -14,11 +20,19 @@ router.get('/test',(req,res)=>{
 /////REGISTER
 
 router.post('/register',(req,res)=>{
+
+    const {errors,isValid}=validateRegisterInput(req.body);
+
+    if(!isValid){
+        return res.status(400).json(errors)
+    }
+
     User.findOne({email:req.body.email})
     .then(user=>{
         if(user)
         {
-            return res.status(400).json({email:'Email already exists'}); // sending error status code
+            errors.email='Email already exists'
+            return res.status(400).json(errors); // sending error status code
         }
         else{
             const avatar=gravatar.url(req.body.email,{
@@ -51,25 +65,52 @@ router.post('/register',(req,res)=>{
 
 /////LOGIN
 router.post('/login',(req,res)=>{
+
+    const {errors,isValid}=validateLoginInput(req.body);
+
+    if(!isValid){
+        return res.status(400).json(errors)
+    } 
+
     const email=req.body.email;
     const password=req.body.password;
 
     User.findOne({email})
         .then(user=>{
             if(!user){
-                return res.status(404).json({email:'User not found'});
+                errors.email='User not found';
+                return res.status(404).json(errors);
             }
 
-            bcrypt.compare(password,user.password)   //password is the password typed at login and user.password is the hashed password stored in db
+            bcrypt.compare(password,user.password)   //'password' is the password typed at login and user.password is the hashed password stored in db
                 .then(isMatch=>{
                     if(isMatch){
-                        res.json({msg:'Success'})
+                        const payload={id:user.id,name:user.name,avatar:user.avatar} //Create JWT Payload
+
+                        jwt.sign(payload,keys.secretOrKey,{expiresIn:3600},(err,token)=>{
+                            res.json({
+                                success:true,
+                                token:'Bearer ' +token
+                            });
+                        });
                     }
                     else{
-                        return res.status(400).json({password:'Incorrect password'})
+                        errors.password='Password Incorrect'
+                        return res.status(400).json(errors)
                     }
                 })
         })
+})
+
+
+////Private route to return current user
+
+router.get('/current',passport.authenticate('jwt',{session:false}),(req,res)=>{
+    res.json({
+        id:req.user.id,
+        name:req.user.name,
+        email:req.user.email
+    })
 })
 
 
