@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { getCurrentProfile, deleteAccount } from '../../actions/profileActions';
 import Spinner from '../common/Spinner';
 import ProfileActions from './ProfileActions';
+import Experience from './Experience.js';
+import Education from './Education.js';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -35,6 +37,8 @@ class Dashboard extends Component {
               </b>
             </p>
             <ProfileActions />
+            <Experience experience={profile.experience} />
+            <Education education={profile.education} />
             <div style={{ marginBottom: '60px' }} />
             <button
               onClick={this.onDeleteClick.bind(this)}
@@ -76,7 +80,7 @@ class Dashboard extends Component {
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  deleteAccount: PropTypes.object.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
 };
 
