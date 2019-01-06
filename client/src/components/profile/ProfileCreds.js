@@ -3,7 +3,7 @@ class ProfileCreds extends Component {
   render() {
     return (
       <div>
-        <h1>About</h1>
+        <h1>Creds</h1>
       </div>
     );
   }
