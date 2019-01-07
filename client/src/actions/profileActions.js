@@ -8,7 +8,7 @@ import {
   SET_CURRENT_USER
 } from './types';
 
-//Get current profile
+// Get current profile
 export const getCurrentProfile = () => dispatch => {
   dispatch(setProfileLoading());
   axios
@@ -58,7 +58,6 @@ export const createProfile = (profileData, history) => dispatch => {
       })
     );
 };
-
 //Add experience
 export const addExperience = (expData, history) => dispatch => {
   axios

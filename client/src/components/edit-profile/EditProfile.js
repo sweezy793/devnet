@@ -4,8 +4,8 @@ import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TextFieldGroup from '../common/TextFieldGroup';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
-import SelectListGroup from '../common/SelectListGroup';
 import InputGroup from '../common/InputGroup';
+import SelectListGroup from '../common/SelectListGroup';
 import { createProfile, getCurrentProfile } from '../../actions/profileActions';
 import isEmpty from '../../validation/isEmpty';
 
@@ -29,6 +29,7 @@ class CreateProfile extends Component {
       instagram: '',
       errors: {}
     };
+
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -41,13 +42,14 @@ class CreateProfile extends Component {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
+
     if (nextProps.profile.profile) {
       const profile = nextProps.profile.profile;
 
-      //Bring skills array back to CSV
+      // Bring skills array back to CSV
       const skillsCSV = profile.skills.join(',');
 
-      //If profile field doesn't exist make empty string
+      // If profile field doesnt exist, make empty string
       profile.company = !isEmpty(profile.company) ? profile.company : '';
       profile.website = !isEmpty(profile.website) ? profile.website : '';
       profile.location = !isEmpty(profile.location) ? profile.location : '';
@@ -85,7 +87,8 @@ class CreateProfile extends Component {
         twitter: profile.twitter,
         facebook: profile.facebook,
         linkedin: profile.linkedin,
-        youtube: profile.youtube
+        youtube: profile.youtube,
+        instagram: profile.instagram
       });
     }
   }
@@ -172,8 +175,9 @@ class CreateProfile extends Component {
       );
     }
 
+    // Select options for status
     const options = [
-      { label: 'Select Professional Status', value: 0 },
+      { label: '* Select Professional Status', value: 0 },
       { label: 'Developer', value: 'Developer' },
       { label: 'Junior Developer', value: 'Junior Developer' },
       { label: 'Senior Developer', value: 'Senior Developer' },
@@ -192,16 +196,16 @@ class CreateProfile extends Component {
               <Link to="/dashboard" className="btn btn-light">
                 Go Back
               </Link>
-              <h1 className="display-4 text-center">Edit Your Profile</h1>
-              <small className="d-block pb-3">* = mandatory</small>
+              <h1 className="display-4 text-center">Edit Profile</h1>
+              <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="Profile Handle"
+                  placeholder="* Profile Handle"
                   name="handle"
                   value={this.state.handle}
                   onChange={this.onChange}
                   error={errors.handle}
-                  info="* A unique handle for your profile"
+                  info="A unique handle for your profile URL. Your full name, company name, nickname"
                 />
                 <SelectListGroup
                   placeholder="Status"
@@ -210,7 +214,7 @@ class CreateProfile extends Component {
                   onChange={this.onChange}
                   options={options}
                   error={errors.status}
-                  info="* Where are you in your career currently"
+                  info="Give us an idea of where you are at in your career"
                 />
                 <TextFieldGroup
                   placeholder="Company"
@@ -218,7 +222,7 @@ class CreateProfile extends Component {
                   value={this.state.company}
                   onChange={this.onChange}
                   error={errors.company}
-                  info="Your very own company or where you work at"
+                  info="Could be your own company or one you work for"
                 />
                 <TextFieldGroup
                   placeholder="Website"
@@ -226,7 +230,7 @@ class CreateProfile extends Component {
                   value={this.state.website}
                   onChange={this.onChange}
                   error={errors.website}
-                  info="Your very own website or your company's"
+                  info="Could be your own website or a company one"
                 />
                 <TextFieldGroup
                   placeholder="Location"
@@ -234,32 +238,34 @@ class CreateProfile extends Component {
                   value={this.state.location}
                   onChange={this.onChange}
                   error={errors.location}
-                  info="Where are you situated"
+                  info="City or city & state suggested (eg. Boston, MA)"
                 />
                 <TextFieldGroup
-                  placeholder="Skills"
+                  placeholder="* Skills"
                   name="skills"
                   value={this.state.skills}
                   onChange={this.onChange}
                   error={errors.skills}
-                  info="* eg. C,C++, Python, JavaScript"
+                  info="Please use comma separated values (eg.
+                    HTML,CSS,JavaScript,PHP"
                 />
                 <TextFieldGroup
-                  placeholder="GitHub username"
+                  placeholder="Github Username"
                   name="githubusername"
                   value={this.state.githubusername}
                   onChange={this.onChange}
                   error={errors.githubusername}
-                  info="Link your GitHub and show off your projects"
+                  info="If you want your latest repos and a Github link, include your username"
                 />
                 <TextAreaFieldGroup
-                  placeholder="Bio"
+                  placeholder="Short Bio"
                   name="bio"
                   value={this.state.bio}
                   onChange={this.onChange}
                   error={errors.bio}
-                  info="Tell us a little bit about yourself"
+                  info="Tell us a little about yourself"
                 />
+
                 <div className="mb-3">
                   <button
                     type="button"
@@ -268,11 +274,11 @@ class CreateProfile extends Component {
                         displaySocialInputs: !prevState.displaySocialInputs
                       }));
                     }}
-                    className="btn btn-secondary"
+                    className="btn btn-light"
                   >
-                    Add Social Media links
+                    Add Social Network Links
                   </button>
-                  <span className="text-muted"> Optional</span>
+                  <span className="text-muted">Optional</span>
                 </div>
                 {socialInputs}
                 <input
