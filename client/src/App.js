@@ -24,6 +24,7 @@ import PrivateRoute from './components/common/PrivateRoute';
 import store from './store';
 import './App.css';
 import AddEducation from './components/add-credentials/AddEducation';
+import NotFound from './components/not-found/NotFound';
 
 //Check fro token
 if (localStorage.jwtToken) {
@@ -55,6 +56,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <div className="container">
               <Route exact path="/register" component={Register} />
+
               <Route exact path="/login" component={Login} />
               <Route exact path="/profiles" component={Profiles} />
               <Route exact path="/profile/:handle" component={Profile} />
@@ -89,6 +91,7 @@ class App extends Component {
                   component={AddEducation}
                 />
               </Switch>
+              <Route exact path="/not-found" component={NotFound} />
             </div>
             <Footer />
           </div>
