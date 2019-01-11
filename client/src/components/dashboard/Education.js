@@ -11,7 +11,7 @@ class Education extends Component {
 
   render() {
     const education = this.props.education.map(edu => (
-      <tr key={edu._id}>
+      <tr className="table-secondary" key={edu._id}>
         <td>{edu.school}</td>
         <td>{edu.degree}</td>
         <td>
@@ -36,7 +36,7 @@ class Education extends Component {
       <div>
         <h4 className="mb-4">Education Credentials</h4>
         <table className="table">
-          <thead>
+          <thead className="thead-dark">
             <tr>
               <th>School</th>
               <th>Degree</th>

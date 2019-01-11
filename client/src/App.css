@@ -37,3 +37,14 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+body {
+  font-family: 'Karla', sans-serif;
+  min-height: 100vh;
+  position: relative;
+  margin: 0;
+}
+
+#root{
+  padding-bottom:120px;
+}

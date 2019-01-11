@@ -11,7 +11,7 @@ class Experience extends Component {
 
   render() {
     const experience = this.props.experience.map(exp => (
-      <tr key={exp._id}>
+      <tr className="table-secondary" key={exp._id}>
         <td>{exp.company}</td>
         <td>{exp.title}</td>
         <td>
@@ -35,8 +35,8 @@ class Experience extends Component {
     return (
       <div>
         <h4 className="mb-4">Experience Credentials</h4>
-        <table className="table">
-          <thead>
+        <table className="table table-hover">
+          <thead className="thead-dark">
             <tr>
               <th>Company</th>
               <th>Title</th>
